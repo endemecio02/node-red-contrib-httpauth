@@ -1,0 +1,61 @@
+<script type="text/javascript">
+	RED.nodes.registerType("node-red-contrib-httpauth", {
+		category: "function",
+		inputs: 1,
+		outputs: 1,
+		defaults: {
+			name: {value: ""},
+			file: {value: "", type: "node-red-contrib-httpauthfile", required: false},
+			cred: {value: "", type: "node-red-contrib-httpauthcred", required: false},
+			authType: {value: "Basic"},
+			realm: {value: ""},
+			username: {value: ""},
+			password: {value: ""}
+		},
+		color: "#E7E7AE",
+		icon: "white-globe.png",
+		label: function() {return this.name.trim() || "http auth";},
+		labelStyle: function() {return this.name.trim() ? "node_label_italic" : "";},
+		paletteLabel: "http auth"
+	});
+</script>
+
+<script type="text/x-red" data-template-name="node-red-contrib-httpauth">
+	<div class="form-row">
+		<label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+		<input type="text" id="node-input-name">
+	</div>
+	<hr />
+	<div class="form-row">
+		<label for="node-input-file"><i class="fa fa-list"></i> File</label>
+		<input type="text" id="node-input-file">
+	</div>
+	<hr />
+	<div class="form-row">
+		<label for="node-input-cred"><i class="fa fa-list"></i> Credentials</label>
+		<input type="text" id="node-input-cred">
+	</div>
+	<hr />
+	<div class="form-row">
+		<label for="node-input-authType"><i class="fa fa-list"></i> Auth Type</label>
+		<select id="node-input-authType">
+			<option value="Basic">Basic</option>
+			<option value="Digest">Digest</option>
+		</select>
+	</div>
+	<div class="form-row">
+		<label for="node-input-realm"><i class="fa fa-globe"></i> Realm</label>
+		<input type="text" id="node-input-realm">
+	</div>
+	<div class="form-row">
+		<label for="node-input-username"><i class="fa fa-user"></i> Username</label>
+		<input type="text" id="node-input-username">
+	</div>
+	<div class="form-row">
+		<label for="node-input-password"><i class="fa fa-key"></i> Password</label>
+		<input type="text" id="node-input-password">
+	</div>
+</script>
+
+<script type="text/x-red" data-help-name="node-red-contrib-httpauth">
+</script>

@@ -1,0 +1,34 @@
+<script type="text/javascript">
+	RED.nodes.registerType("node-red-contrib-httpauthfile", {
+		category: "config",
+		defaults: {
+			name: {value: ""},
+			authType: {value: "Basic", required: true},
+			realm: {value: "", required: true},
+			filePath: {value: "", required: true}
+		},
+		label: function() {return this.name.trim() || "[" + this.authType + "] " + this.realm.trim() + ":" + this.filePath.trim();}
+	});
+</script>
+
+<script type="text/x-red" data-template-name="node-red-contrib-httpauthfile">
+	<div class="form-row">
+		<label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+		<input type="texth" id="node-config-input-name">
+	</div>
+	<div class="form-row">
+		<label for="node-config-input-authType"><i class="fa fa-list"></i> Auth Type</label>
+		<select id="node-config-input-authType">
+			<option value="Basic">Basic</option>
+			<option value="Digest">Digest</option>
+		</select>
+	</div>
+	<div class="form-row">
+		<label for="node-config-input-realm"><i class="fa fa-globe"></i> Realm</label>
+		<input type="text" id="node-config-input-realm">
+	</div>
+	<div class="form-row">
+		<label for="node-config-input-filePath"><i class="fa fa-file"></i> File</label>
+		<input type="text" id="node-config-input-filePath">
+	</div>
+</script>
