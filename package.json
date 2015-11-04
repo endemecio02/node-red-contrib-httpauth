@@ -12,9 +12,9 @@
   },
   "node-red": {
     "nodes": {
-      "node-red-contrib-httpauth": "nodes/node-red-contrib-httpauth.js",
-      "node-red-contrib-httpauthcred": "nodes/node-red-contrib-httpauthcred.js",
-      "node-red-contrib-httpauthfile": "nodes/node-red-contrib-httpauthfile.js"
+      "node-red-contrib-httpauth": "nodes/http-auth.js",
+      "node-red-contrib-httpauthcred": "nodes/http-auth-cred.js",
+      "node-red-contrib-httpauthfile": "nodes/http-auth-file.js"
     }
   }
 }
