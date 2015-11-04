@@ -27,9 +27,9 @@ function digestAuth(authStr, node, msg) {
 	}
 
 	var user = node.httpauthconf.getUser(auth.realm, auth.username);
-	var session = sessions[auth.nonce];
+	var session = sessions[auth.nonce + auth.opaque];
 
-	if (user && session && auth.opaque == session.opaque) {
+	if (user && session) {
 		var ha1 = node.httpauthconf.src == "file" ? user.password : md5(auth.username + ":" + auth.realm + ":" + user.password);
 		ha1 = auth.algorithm == "MD5-sess" ? md5(ha1 + ":" + auth.nonce + ":" + auth.cnonce) : ha1;
 
@@ -38,7 +38,15 @@ function digestAuth(authStr, node, msg) {
 		var response = md5(ha1 + ":" + auth.nonce + ":" + auth.nc + ":" + auth.cnonce + ":" + auth.qop + ":" + ha2);
 
 		if (auth.response == response) {
-			node.send(msg);
+			var timestamp = (new Date()).getTime();
+
+			if (session.expires > timestamp) {
+				session.expires = timestamp;
+				node.send(msg);
+			} else {
+				delete sessions[auth.nonce + auth.opaque];
+				unAuth(node, msg, true);
+			}
 		} else {
 			unAuth(node, msg);
 		}
@@ -47,35 +55,45 @@ function digestAuth(authStr, node, msg) {
 	}
 }
 
-function digestStale(auth, node, msg) {
+function digestSession(realm) {
+	var date = new Date();
+	var timestamp = date.getTime();
+	var expires = timestamp + 10000; // 10 seconds from now
+	var random = Math.random(timestamp);
+	var nonce = new Buffer(timestamp + ":" + random).toString("base64");
+	var opaque = new Buffer(String(timestamp + random)).toString("base64");
+	var qop = "auth";
+	var algorithm = "MD5-sess";
+
+	return {
+		timestamp: timestamp,
+		expires: expires,
+		random: random,
+		realm: realm,
+		nonce: nonce,
+		opaque: opaque,
+		qop: qop,
+		algorithm: algorithm
+	};
 }
 
-function unAuth(node, msg) {
+function unAuth(node, msg, stale) {
 var count = 0;
 	switch (node.httpauthconf.authType) {
 		case "Digest":
-			var date = new Date();
-			var random = Math.random();
-			var realm = node.httpauthconf.realm;
-			var nonce = new Buffer(date.getTime() + ":" + random).toString("base64");
-			var opaque = new Buffer(String(random)).toString("base64");
-			var qop = "auth";
-			var algorithm = "MD5-sess";
+			var session = digestSession(node.httpauthconf.realm);
+			sessions[session.nonce + session.opaque] = session;
 
-			sessions[nonce] = {
-				timestamp: date.getTime(),
-				expires: date.getTime() + 30000,
-				stale: false,
-				random: random,
-				realm: realm,
-				opaque: opaque,
-				qop: qop,
-				algorithm: algorithm
-			};
-
-			msg.res.set("WWW-Authenticate", 'Digest realm="' + realm + '", nonce="' + nonce + '", opaque="' + opaque + '", qop="' + qop + '", algorithm="' + algorithm + '"');
+			msg.res.set("WWW-Authenticate", 
+				'Digest realm="' + session.realm + '"'
+				+ ', nonce="' + session.nonce + '"'
+				+ ', opaque="' + session.opaque + '"'
+				+ ', qop="' + session.qop + '"'
+				+ ', algorithm="' + session.algorithm + '"'
+				+ (stale ? ', stale="true"' : '')
+			);
 			break;
-		case "Basic": default: msg.res.set("WWW-Authenticate", 'Basic realm="' + realm + '"');
+		case "Basic": default: msg.res.set("WWW-Authenticate", 'Basic realm="' + node.httpauthconf.realm + '"');
 	}
 
 	msg.res.set("Content-Type", "text/plain");

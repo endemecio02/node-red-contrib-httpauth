@@ -1,14 +1,13 @@
 {
   "name": "node-red-contrib-httpauth",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Node which implements HTTP Basic/Digest Authorization.",
   "keywords": [
     "node-red"
   ],
   "author": "Endemecio Santana",
-  "license": "ISC",
+  "license": "GPLv2",
   "dependencies": {
-    "md5": "^2.0.0",
-    "sessions": "0.0.2"
+    "md5": "^2.0.0"
   }
 }
