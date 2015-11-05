@@ -63,4 +63,49 @@
 </script>
 
 <script type="text/x-red" data-help-name="node-red-contrib-httpauth">
+<p>Node-RED node for HTTP Basic/Digest Auth</p>
+
+<p>This Node-RED module performs Basic and Digest authentication.<br />It is to be used in conjunction with an http input node.</>
+
+<img src="https://github.com/endemecio02/node-red-contrib-httpauth/blob/master/images/flow.png" />
+
+<h2>Config</2>
+
+<img src="https://github.com/endemecio02/node-red-contrib-httpauth/blob/master/images/config.png" />
+
+<p>There are three type of configuration:</p>
+<ol>
+  <li>File: the user credentials are stored in a file. (mutliple credentials)</li>
+  <li>Shared: credentials shared which multiple nodes. (one credential)</li>
+  <li>Not Shared: each node has it's own credentials. (one credential)</li>
+</ol>
+
+<p>With all three config types you must specify the following:</p>
+<ul>
+  <li>Auth Type: what authentication type will be used: Basic, Digest</li>
+  <li>Realm: what realm will be used with this node</li>
+  <li>Hashed: are the passwords in the Password field or in the credentials file hashed.<br />
+      This field is only relavent if Auth Type is Digest. It has no effect on Basic.<br />
+      Hash format: MD5(Username:Realm:Password)</li>
+</ul>
+
+<p>With Shared and Not Shared config types you must specify the following:</p>
+<ul>
+  <li>Username: the username</li>
+  <li>Password: the password<br />
+      If you entered a hashed password you must check the Hashed checkbox.</li>
+</ul>
+
+<p>With File config type you must specify the following:</p>
+<ul>
+  <li>File: location of the file containing the credentials relative to the presently working directory<br />
+   If the password are hashed you must check the Hashed checkbox.</li>
+<ul>
+<h3>File Configuration</h3>
+
+<img src="https://github.com/endemecio02/node-red-contrib-httpauth/blob/master/images/file.png" />
+
+<h3>Shared config</h3>
+
+<img src="https://github.com/endemecio02/node-red-contrib-httpauth/blob/master/images/cred.png" />
 </script>
