@@ -1,4 +1,0 @@
-MyUsername:MyRealm:MyPassword
-YourUsername:YourRealm:YourPassword
-MyUsername:OurRealm:MyPassword
-YourUsername:OurRealm:YourPassword
