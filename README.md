@@ -6,7 +6,7 @@ It is to be used in conjunction with an http input node.
 
 ![flow.png](images/flow.png)
 
-# Config #
+## Config ##
 
 <img src="images/config.png" style="max-width: 40%;" />
 
