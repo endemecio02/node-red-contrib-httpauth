@@ -16,15 +16,29 @@ There are three type of configuration:
  2. Shared: credentials shared which multiple nodes. (one credential)
  3. Not Shared: each node has it's own credentials. (one credential)
 
-With all three types of configurations you must specify the following:
+With all three config types you must specify the following:
 
  - Auth Type: what authentication type will be used: Basic, Digest
  - Realm: what realm will be used with this node
  - Hashed: are the passwords in the Password field or in the credentials file hashed.
-     This field is only relavent if Auth Type is Digest. It has no effect on Basic.
+   This field is only relavent if Auth Type is Digest. It has no effect on Basic.
+   Hash format: MD5(Username:Realm:Password)
+
+With Shared and Not Shared config types you must specify the following:
+
+ - Username: the username
+ - Password: the password
+   If you entered a hashed password you must check the Hashed checkbox.
+
+With File config type you must specify the following:
+
+ - File: location of the file containing the credentials relative to the presently working directory
+   If the password are hashed you must check the Hashed checkbox.
 
 ### File Configuration ###
 
 ![file.png](images/file.png)
 
-With File configuration you specify 
+### Shared config ###
+
+![cred.png](images/cred.png)
