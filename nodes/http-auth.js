@@ -30,7 +30,7 @@ function digestAuth(authStr, node, msg) {
 	var session = sessions[auth.nonce + auth.opaque];
 
 	if (user && session) {
-		var ha1 = node.httpauthconf.src == "file" ? user.password : md5(auth.username + ":" + auth.realm + ":" + user.password);
+		var ha1 = user.hashed ? user.password : md5(auth.username + ":" + auth.realm + ":" + user.password);
 		ha1 = auth.algorithm == "MD5-sess" ? md5(ha1 + ":" + auth.nonce + ":" + auth.cnonce) : ha1;
 
 		var ha2 = md5(auth.method + ":" + auth.uri);
@@ -78,7 +78,6 @@ function digestSession(realm) {
 }
 
 function unAuth(node, msg, stale) {
-var count = 0;
 	switch (node.httpauthconf.authType) {
 		case "Digest":
 			var session = digestSession(node.httpauthconf.realm);
@@ -113,12 +112,14 @@ module.exports = function(RED) {
 		var username = config.username.trim();
 		var usernameL = username.toLowerCase();
 		var password = config.password;
+		var hashed = config.hashed;
 		var getUser = function(_realm, _username) {
 			if (_realm.trim().toLowerCase() == realmL && _username.trim().toLowerCase() == usernameL) {
 				return {
 					realm: realm,
 					username: username,
-					password: password
+					password: password,
+					hashed: hashed
 				};
 			}
 			return null;
@@ -133,6 +134,7 @@ module.exports = function(RED) {
 			username = cred.username.trim();
 			usernameL = username.toLowerCase();
 			password = cred.password;
+			hashed = cred.hashed;
 		}
 
 		var file = RED.nodes.getNode(config.file);

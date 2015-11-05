@@ -6,7 +6,8 @@
 			authType: {value: "Basic", required: true},
 			realm: {value: "", required: true},
 			username: {value: "", required: true},
-			password: {value: "", required: true}
+			password: {value: "", required: true},
+			hashed: {value: false, required: true}
 		},
 		label: function() {return this.name.trim() || "[" + this.authType + "] " + this.realm.trim() + ":" + this.username.trim() + ":*****";}
 	});
@@ -35,5 +36,9 @@
 	<div class="form-row">
 		<label for="node-config-input-password"><i class="fa fa-key"></i> Password</label>
 		<input type="text" id="node-config-input-password">
+	</div>
+	<div class="form-row">
+		<label for="node-config-input-hashed"><i class="fa fa-asterisk"></i> Hashed</label>
+		<input type="checkbox" id="node-config-input-hashed">
 	</div>
 </script>

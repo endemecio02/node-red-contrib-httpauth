@@ -10,6 +10,7 @@ module.exports = function(RED) {
 		var realm = config.realm.trim();
 		var realmL = realm.toLowerCase();
 		var filePath = config.filePath.trim();
+		var hashed = config.hashed;
 		var users = {};
 
 		var stats = fs.statSync(filePath);
@@ -29,14 +30,15 @@ module.exports = function(RED) {
 					users[_usernameL] = {
 						realm: _realm,
 						username: _username,
-						password: _password
+						password: _password,
+						hashed: hashed
 					};
 				}
 			}
 		}
 
-		this.authType = authType;
-		this.realm = realm;
+		this.authType = config.authType;
+		this.realm = config.realm;
 		this.getUser = function(_realm, _username) {
 			var _realmL = _realm.trim().toLowerCase();
 			var _usernameL = _username.trim().toLowerCase();
@@ -44,7 +46,8 @@ module.exports = function(RED) {
 				return {
 					realm: users[_usernameL].realm,
 					username: users[_usernameL].username,
-					password: users[_usernameL].password
+					password: users[_usernameL].password,
+					hashed: users[_usernameL].hashed
 				};
 			}
 			return null;
