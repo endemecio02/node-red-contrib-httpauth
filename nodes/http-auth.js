@@ -17,7 +17,18 @@ function basicAuth(authStr, node, msg) {
 
 function digestAuth(authStr, node, msg) {
 	var values = authStr.split(", ");
-	var auth = {method: msg.req.route.method.toUpperCase()};
+	var method = msg.req.route.method;
+
+	// Bluemix workaround
+	if (!method && msg.req.route.methods) {
+		for (var _method in msg.req.route.methods) {
+			if (!method && msg.req.route.methods[_method]) {
+				method = _method;
+			}
+		}
+	}
+
+	var auth = {method: method.toUpperCase()};
 
 	for (var index = 0; index < values.length; index++) {
 		var value = values[index].trim();
