@@ -106,7 +106,7 @@ function unAuth(node, msg, stale) {
 		case "Basic": default: msg.res.set("WWW-Authenticate", 'Basic realm="' + node.httpauthconf.realm + '"');
 	}
 
-	msg.res.set("Content-Type", "text/plain");
+	msg.res.type("text/plain");
 	msg.res.status(401).send("401 Unauthorized");
 }
 
