@@ -1,4 +1,4 @@
-var md5 = require("md5");
+var crypto = require("crypto");
 
 var sessions = {};
 
@@ -41,12 +41,29 @@ function digestAuth(authStr, node, msg) {
 	var session = sessions[auth.nonce + auth.opaque];
 
 	if (user && session) {
-		var ha1 = user.hashed ? user.password : md5(auth.username + ":" + auth.realm + ":" + user.password);
-		ha1 = auth.algorithm == "MD5-sess" ? md5(ha1 + ":" + auth.nonce + ":" + auth.cnonce) : ha1;
+		var ha1 = null;
 
-		var ha2 = md5(auth.method + ":" + auth.uri);
+		if (user.hashed) {
+			ha1 = user.password;
+		} else {
+			var hash = crypto.createHash("md5");
+			hash.update(auth.username + ":" + auth.realm + ":" + user.password, "utf8");
+			ha1 = hash.digest("hex");
+		}
 
-		var response = md5(ha1 + ":" + auth.nonce + ":" + auth.nc + ":" + auth.cnonce + ":" + auth.qop + ":" + ha2);
+		if (auth.algorithm == "MD5-sess") {
+			var hash = crypto.createHash("md5");
+			hash.update(ha1 + ":" + auth.nonce + ":" + auth.cnonce, "utf8");
+			ha1 = hash.digest("hex");
+		}
+
+		var hash = crypto.createHash("md5");
+		hash.update(auth.method + ":" + auth.uri, "utf8");
+		var ha2 = hash.digest("hex");
+
+		hash = crypto.createHash("md5");
+		hash.update(ha1 + ":" + auth.nonce + ":" + auth.nc + ":" + auth.cnonce + ":" + auth.qop + ":" + ha2, "utf8");
+		var response = hash.digest("hex");
 
 		if (auth.response == response) {
 			var timestamp = (new Date()).getTime();
