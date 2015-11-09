@@ -106,12 +106,14 @@ function digestSession(realm) {
 }
 
 function unAuth(node, msg, stale) {
+	var res = msg.res._res || msg.res; // Resolves deprecates warning messages.
+
 	switch (node.httpauthconf.authType) {
 		case "Digest":
 			var session = digestSession(node.httpauthconf.realm);
 			sessions[session.nonce + session.opaque] = session;
 
-			msg.res.set("WWW-Authenticate", 
+			res.set("WWW-Authenticate", 
 				'Digest realm="' + session.realm + '"'
 				+ ', nonce="' + session.nonce + '"'
 				+ ', opaque="' + session.opaque + '"'
@@ -120,11 +122,11 @@ function unAuth(node, msg, stale) {
 				+ (stale ? ', stale="true"' : '')
 			);
 			break;
-		case "Basic": default: msg.res.set("WWW-Authenticate", 'Basic realm="' + node.httpauthconf.realm + '"');
+		case "Basic": default: res.set("WWW-Authenticate", 'Basic realm="' + node.httpauthconf.realm + '"');
 	}
 
-	msg.res.type("text/plain");
-	msg.res.status(401).send("401 Unauthorized");
+	res.type("text/plain");
+	res.status(401).send("401 Unauthorized");
 }
 
 module.exports = function(RED) {
