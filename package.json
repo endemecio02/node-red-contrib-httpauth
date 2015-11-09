@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-httpauth",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Node which implements HTTP Basic/Digest Authorization.",
   "keywords": [
     "node-red",
