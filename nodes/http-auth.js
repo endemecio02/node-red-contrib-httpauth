@@ -209,4 +209,12 @@ module.exports = function(RED) {
 	}
 
 	RED.nodes.registerType("node-red-contrib-httpauth", HttpAuthNode);
+	
+	var fs = require("fs");
+	RED.httpAdmin.get("/node-red-contrib-httpauth/images/:file", function(req, res, next){
+		fs.readFile(__dirname + '/../images/' + req.params.file, function(err, data){
+			res.set('Content-Type', 'image/png');
+			res.send(data);
+		});
+	});
 };
