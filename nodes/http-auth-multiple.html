@@ -1,0 +1,107 @@
+<script type="text/javascript">
+RED.nodes.registerType("node-red-contrib-httpauthmultiple", {
+    category: "config",
+    defaults: {
+        name: { value: "" },
+        authType: { value: "Basic", required: true },
+        realm: { value: "", required: true },
+        hashed: { value: false, required: true },
+        auths: { value: {} }
+    },
+    color: "#E7E7AE",
+    icon: "white-globe.png",
+    label: function() { return (this.name || "http auth multiple"); },
+    oneditprepare: function() {
+        function resizeRule(rule) {
+            var newWidth = rule.width();
+            rule.find('.red-ui-typedInput').typedInput("width", (newWidth - 15) / 2);
+
+        }
+        var authList = $("#node-input-auths-container").css('min-height', '150px').css('min-width', '450px')
+            .editableList({
+                addItem: function(container, i, auth) {
+                    var row = $('<div/>').appendTo(container);
+
+                    var propertyUser = $('<input/>', { class: "node-input-auth-user", type: "text", style: "width: 30%;", placeholder: "user" })
+                        .appendTo(row);
+
+                    var propertyRealm = $('<input/>', { class: "node-input-auth-realm", type: "text", style: "margin-left: 3%; width: 30%;", placeholder: "realm" })
+                        .appendTo(row);
+
+                    var propertyPassword = $('<input/>', { class: "node-input-auth-password", type: "text", style: "margin-left: 3%; width: 30%;", placeholder: "password" })
+                        .appendTo(row);
+
+                    propertyUser.val(auth.user);
+                    propertyRealm.val(auth.realm);
+                    propertyPassword.val(auth.password);
+
+                    resizeRule(container);
+                },
+                resizeItem: resizeRule,
+                removable: true
+            });
+
+        if (this.auths) {
+            for (var key in this.auths) {
+                if ((this.auths[key]).length) {
+                    this.auths[key].forEach(function(value, index) {
+                        authList.editableList('addItem', { realm: key, user: value.user, password: value.password });
+                    })
+                }
+            }
+        }
+    },
+    oneditsave: function() {
+        var auths = $("#node-input-auths-container").editableList('items');
+        var node = this;
+        node.auths = {};
+        auths.each(function(i) {
+            var auth = $(this);
+            var user = auth.find(".node-input-auth-user").val();
+            var realm = auth.find(".node-input-auth-realm").val();
+            var password = auth.find(".node-input-auth-password").val();
+
+            if (!node.auths[realm]) {
+                node.auths[realm] = [];
+            }
+
+            if (realm && user && password) {
+                node.auths[realm].push({
+                    "user": user,
+                    "password": password
+                });
+            }
+        });
+
+    },
+    paletteLabel: "http auth"
+});
+</script>
+<script type="text/x-red" data-template-name="node-red-contrib-httpauthmultiple">
+	<div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="texth" id="node-config-input-name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-authType"><i class="fa fa-list"></i> Auth Type</label>
+        <select id="node-input-authType">
+            <option value="Basic">Basic</option>
+            <option value="Digest">Digest</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-realm"><i class="fa fa-globe"></i> Realm</label>
+        <input type="text" id="node-config-input-realm">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-hashed"><i class="fa fa-asterisk"></i> Hashed</label>
+        <input type="checkbox" id="node-config-input-hashed">
+    </div>
+    <div class="form-row">
+        <label><i class="fa fa-list"></i> Auths</span>
+        </label>
+    </div>
+    <div class="form-row node-input-auths-container-row">
+        <ol id="node-input-auths-container"></ol>
+    </div>
+</script>

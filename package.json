@@ -1,30 +1,74 @@
 {
-  "name": "node-red-contrib-httpauth",
-  "version": "1.0.12",
+  "_from": "git+https://github.com/pjalbuquerque/node-red-contrib-httpauth.git",
+  "_id": "node-red-contrib-httpauth@1.0.12",
+  "_inBundle": false,
+  "_location": "/node-red-contrib-httpauth",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "https://github.com/pjalbuquerque/node-red-contrib-httpauth.git",
+    "rawSpec": "https://github.com/pjalbuquerque/node-red-contrib-httpauth.git",
+    "saveSpec": "git+https://github.com/pjalbuquerque/node-red-contrib-httpauth.git",
+    "fetchSpec": "https://github.com/pjalbuquerque/node-red-contrib-httpauth.git",
+    "gitCommittish": null
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+https://github.com/pjalbuquerque/node-red-contrib-httpauth.git#64cec192cb907141387abdc6855c1a7c7ddcca5e",
+  "_spec": "https://github.com/pjalbuquerque/node-red-contrib-httpauth.git",
+  "_where": "/Users/Paulo/.node-red",
+  "author": {
+    "name": "Endemecio Santana"
+  },
+  "bugs": {
+    "url": "https://github.com/endemecio02/node-red-contrib-httpauth/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
   "description": "Node which implements HTTP Basic/Digest Authorization.",
+  "engines": {
+    "node": "^0.12.7"
+  },
+  "homepage": "https://github.com/endemecio02/node-red-contrib-httpauth#readme",
   "keywords": [
     "node-red",
-	"http",
-	"authorization",
-	"basic",
-	"digest"
+    "http",
+    "authorization",
+    "basic",
+    "digest"
   ],
-  "author": "Endemecio Santana",
   "license": "GPL-2.0",
-  "dependencies": {
-  },
-  "repository": {
-	  "type": "git",
-	  "url": "https://github.com/endemecio02/node-red-contrib-httpauth.git"
-  },
-  "engines": {
-	  "node": "^0.12.7"
-  },
+  "name": "node-red-contrib-httpauth",
   "node-red": {
     "nodes": {
       "node-red-contrib-httpauth": "nodes/http-auth.js",
       "node-red-contrib-httpauthcred": "nodes/http-auth-cred.js",
-      "node-red-contrib-httpauthfile": "nodes/http-auth-file.js"
+      "node-red-contrib-httpauthfile": "nodes/http-auth-file.js",
+      "node-red-contrib-httpauthmultiple": "nodes/http-auth-multiple.js"
     }
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/endemecio02/node-red-contrib-httpauth.git"
+  },
+  "version": "1.0.12",
+  "warnings": [
+    {
+      "code": "ENOTSUP",
+      "required": {
+        "node": "^0.12.7"
+      },
+      "pkgid": "node-red-contrib-httpauth@1.0.12"
+    },
+    {
+      "code": "ENOTSUP",
+      "required": {
+        "node": "^0.12.7"
+      },
+      "pkgid": "node-red-contrib-httpauth@1.0.12"
+    }
+  ]
 }
